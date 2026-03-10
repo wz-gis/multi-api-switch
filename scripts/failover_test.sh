@@ -13,10 +13,10 @@ echo "📦 Backing up profiles to $BACKUP_FILE..."
 cp "$PROFILES_FILE" "$BACKUP_FILE"
 
 # 2. Invalidate first key (example for google:profile_new)
-# We use sed to replace the key of the first profile with a broken one.
 # This assumes google:profile_new is the first profile as set in SKILL.md.
-echo "🧨 Temporarily invalidating the primary key (google:profile_new)..."
-sed -i 's/"key": "AIzaSyA8FIfqBx4gKVLFmAzAbym2zDbt4y3LfKA"/"key": "BROKEN-AIzaSyA8FIfqBx4gKVLFmAzAbym2zDbt4y3LfKA"/' "$PROFILES_FILE"
+echo "🧨 Temporarily invalidating the primary key..."
+# Using a generic pattern to invalidate the first API key found
+sed -i '0,/"key": "[^"]*"/{s/"key": "[^"]*"/"key": "BROKEN-KEY"/}' "$PROFILES_FILE"
 
 # 3. Reload secrets
 echo "📡 Reloading secrets..."
